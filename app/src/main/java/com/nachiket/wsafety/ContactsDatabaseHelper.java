@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsDatabaseHelper extends SQLiteOpenHelper {
+
     private static final String DB_NAME = "contacts_db";
-    private static final int DB_VERSION = 1;
+
+    // 🔴 IMPORTANT: increase version
+    private static final int DB_VERSION = 2;
 
     public ContactsDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -18,7 +21,14 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS emergency_contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, number TEXT UNIQUE)");
+
+        // ✅ name + number
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS emergency_contacts (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "name TEXT, " +
+                        "number TEXT UNIQUE)"
+        );
     }
 
     @Override
@@ -27,25 +37,28 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // ✅ Fetch all contacts from the DB
+    // ✅ Fetch name + number
     public List<String> getAllEmergencyContacts() {
+
         List<String> contacts = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT number FROM emergency_contacts", null);
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT name, number FROM emergency_contacts", null);
+
         if (cursor.moveToFirst()) {
             do {
-                contacts.add(cursor.getString(0));
+                contacts.add(cursor.getString(0) + " : " + cursor.getString(1));
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
         return contacts;
     }
 
-    // ✅ Delete contact by number
     public void deleteContact(String number) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("emergency_contacts", "number = ?", new String[]{number});
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("emergency_contacts", "number=?", new String[]{number});
         db.close();
     }
 }

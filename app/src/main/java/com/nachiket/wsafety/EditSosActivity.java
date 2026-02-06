@@ -10,39 +10,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EditSosActivity extends AppCompatActivity {
 
-    private EditText editText;
-    private Button saveBtn;
-    private SharedPreferences prefs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_sos_message);  // Make sure the XML file name is correct
+        setContentView(R.layout.activity_edit_sos_message);
 
-        // Initialize the views
-        editText = findViewById(R.id.editTextSosMessage);  // Use the correct ID as per your XML
-        saveBtn = findViewById(R.id.buttonSaveMessage);    // Use the correct ID as per your XML
+        EditText editText = findViewById(R.id.editTextSosMessage);
+        Button saveBtn = findViewById(R.id.buttonSaveMessage);
 
-        // Initialize SharedPreferences
-        prefs = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-        // Get the current SOS message (default is "I'm in trouble!")
-        String currentMessage = prefs.getString("CUSTOM_MSG", "I'm in trouble!");
-        editText.setText(currentMessage);
+        // Load saved message
+        editText.setText(prefs.getString("CUSTOM_MSG", "Help! I am in danger!"));
 
-        // Set the save button click listener
         saveBtn.setOnClickListener(v -> {
-            String updatedMessage = editText.getText().toString().trim();
+            String msg = editText.getText().toString().trim();
 
-            if (!updatedMessage.isEmpty()) {
-                // Save the updated message to SharedPreferences
-                prefs.edit().putString("CUSTOM_MSG", updatedMessage).apply();
+            if (!msg.isEmpty()) {
+                prefs.edit().putString("CUSTOM_MSG", msg).apply();
                 Toast.makeText(this, "SOS message updated!", Toast.LENGTH_SHORT).show();
+                finish();
             } else {
-                Toast.makeText(this, "Message can't be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Message cannot be empty!", Toast.LENGTH_SHORT).show();
             }
-
-            finish(); // Close the activity
         });
     }
 }

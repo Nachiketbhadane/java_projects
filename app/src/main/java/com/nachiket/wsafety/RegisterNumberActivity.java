@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterNumberActivity extends AppCompatActivity {
 
-    TextInputEditText number;
+    TextInputEditText number, name;
     ContactsDatabaseHelper dbHelper;
 
     @Override
@@ -20,16 +20,30 @@ public class RegisterNumberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_number);
 
+        name = findViewById(R.id.contact_name);
         number = findViewById(R.id.add_contact);
+
         dbHelper = new ContactsDatabaseHelper(this);
     }
 
     public void saveNumber(View view) {
+
         String numberString = number.getText().toString().trim();
+        String nameString = name.getText().toString().trim();
+
+        if (nameString.isEmpty()) {
+            Toast.makeText(this, "Enter Name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (numberString.length() == 10) {
+
             SQLiteDatabase db = dbHelper.getWritableDatabase();
+
             ContentValues values = new ContentValues();
+            values.put("name", nameString);
             values.put("number", numberString);
+
             long result = db.insert("emergency_contacts", null, values);
             db.close();
 
@@ -37,10 +51,11 @@ public class RegisterNumberActivity extends AppCompatActivity {
                 Toast.makeText(this, "Contact Saved!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, "Error saving contact!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Contact already exists!", Toast.LENGTH_SHORT).show();
             }
+
         } else {
-            Toast.makeText(this, "Enter a Valid Number!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Enter Valid Number!", Toast.LENGTH_SHORT).show();
         }
     }
 }

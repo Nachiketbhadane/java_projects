@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.add_contact:
                     intent = new Intent(MainActivity.this, RegisterNumberActivity.class);
                     break;
-                case R.id.edit_sos_message:
+                case R.id.edit_sos:
                     intent = new Intent(MainActivity.this, EditSosActivity.class);
                     break;
                 case R.id.view_contacts:
