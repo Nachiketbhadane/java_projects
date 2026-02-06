@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="nachiket.wsafety">
+
+    <!-- Features -->
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- Permissions for newer Android versions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+
+    <!-- Permissions for Android 6.0 and above (runtime permissions required) -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" android:required="false"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Wsafety">
+
+        <!-- Activities -->
+        <activity android:name="com.nachiket.wsafety.RegisterNumberActivity"/>
+        <activity android:name="com.nachiket.wsafety.EditSosActivity"/>
+        <activity android:name="com.nachiket.wsafety.VoiceAlertActivity"/>
+        <activity android:name="com.nachiket.wsafety.ViewContactsActivity"/>
+        <activity android:name="com.nachiket.wsafety.RemoveContactActivity"/>
+        <activity android:name="com.nachiket.wsafety.VoiceActivationActivity" />
+
+        <!-- SMS Receiver -->
+        <receiver android:name=".SMSReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Splash Screen -->
+        <activity android:name="com.nachiket.wsafety.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.nachiket.wsafety.MainActivity"/>
+
+        <!-- Foreground SOS Service -->
+        <service
+            android:name="com.nachiket.wsafety.ServiceMine"
+            android:enabled="true"
+            android:foregroundServiceType="location"
+            android:exported="false"/>
+    </application>
+</manifest>

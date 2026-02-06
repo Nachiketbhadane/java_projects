@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/edit_sos_message"
+        android:title="Edit SOS Message" />
+    <item
+        android:id="@+id/add_contact"
+        android:title="Add Contact" />
+    <item
+        android:id="@+id/view_contacts"
+        android:title="View Contacts" />
+    <item
+        android:id="@+id/voice_alert"
+        android:title="Voice Alert" />
+</menu>
